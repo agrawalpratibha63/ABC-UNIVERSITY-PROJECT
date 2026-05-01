@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Portal - ABC University</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Inter', 'Segoe UI', Roboto, sans-serif; color: #333; transition: 0.3s; }
+
+        /* --- Navbar --- */
+        .navbar-faculty { background: linear-gradient(135deg, #2c3e50 0%, #000000 100%); padding: 12px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.3s; }
+        .navbar-brand { font-weight: 800; font-size: 22px; color: #fff !important; }
+        
+        .btn-theme-toggle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; background: transparent; color: white; }
+        .btn-theme-toggle:hover { background: rgba(255,255,255,0.2); transform: scale(1.1); }
+
+        .btn-logout { border: 1px solid rgba(255,255,255,0.4); color: white; border-radius: 6px; font-weight: 500; transition: 0.3s; }
+        .btn-logout:hover { background-color: #e74c3c; border-color: #e74c3c; color: white; }
+
+        /* --- Layout Elements --- */
+        .faculty-header { background: url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1500&q=80') center/cover; height: 200px; border-radius: 0 0 30px 30px; margin-bottom: -100px; box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.4); }
+        .card-profile { background: white; border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 30px; text-align: center; transition: 0.3s; }
+        .faculty-avatar { width: 140px; height: 140px; border-radius: 50%; border: 6px solid white; margin-top: -100px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background-color: white; transition: 0.3s; }
+        .section-title { font-weight: 800; color: #2c3e50; border-left: 5px solid #1abc9c; padding-left: 15px; margin-bottom: 25px; transition: 0.3s; }
+        .course-card-fac { background: white; border-radius: 15px; border: none; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; height: 100%; }
+        .course-card-fac:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .course-banner { height: 10px; background: #1abc9c; }
+        .course-icon-box { width: 50px; height: 50px; background: #f0f7f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #1abc9c; font-size: 20px; transition: 0.3s; }
+        .committee-item { background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; border-left: 4px solid #3498db; transition: 0.3s; }
+        .committee-item:hover { background: #f1f8ff; }
+        .comm-icon { font-size: 24px; color: #3498db; margin-right: 15px; }
+
+        /* ========================================= */
+        /* 100% BULLETPROOF DARK MODE STYLES         */
+        /* ========================================= */
+        body.dark-mode { background-color: #0f172a !important; color: #f8fafc !important; }
+        body.dark-mode .navbar-faculty { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-bottom: 1px solid #334155 !important; box-shadow: none; }
+        
+        body.dark-mode .card-profile, body.dark-mode .course-card-fac, body.dark-mode .committee-item { background-color: #1e293b !important; box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important; border: 1px solid #334155; }
+        body.dark-mode .faculty-avatar { border-color: #1e293b !important; background-color: #1e293b !important; }
+        body.dark-mode .section-title { color: #f8fafc !important; border-left-color: #38bdf8 !important; }
+        
+        /* Force Text Colors */
+        body.dark-mode .text-dark { color: #f8fafc !important; }
+        body.dark-mode .text-muted { color: #94a3b8 !important; }
+        body.dark-mode .text-secondary { color: #cbd5e1 !important; }
+        body.dark-mode .fw-bold { color: #f8fafc !important; }
+        body.dark-mode p, body.dark-mode span, body.dark-mode div { color: inherit; }
+        
+        /* Background & UI Fixes */
+        body.dark-mode .bg-light, body.dark-mode .bg-white { background-color: #0f172a !important; }
+        body.dark-mode .course-icon-box { background-color: #334155 !important; }
+        body.dark-mode .committee-item:hover { background-color: #334155 !important; }
+        body.dark-mode .border-top { border-color: #334155 !important; }
+        body.dark-mode .btn-theme-toggle { background: #334155 !important; color: #fbbf24 !important; border-color: transparent !important; }
+        
+        /* Modal & Table Specific Fixes */
+        body.dark-mode .modal-content { background-color: #1e293b !important; color: #f8fafc !important; border: 1px solid #334155 !important; }
+        body.dark-mode .modal-header { border-bottom-color: #334155 !important; }
+        body.dark-mode .table-light { background-color: #334155 !important; color: #f8fafc !important; border-bottom-color: #475569 !important; }
+        body.dark-mode .table-hover tbody tr:hover td { background-color: #334155 !important; color: white !important; }
+        body.dark-mode td, body.dark-mode th { border-color: #334155 !important; color: #f8fafc !important; }
+        body.dark-mode table { color: #f8fafc !important; }
+
+        .animate-up { animation: fadeInUp 0.7s ease-out forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-faculty">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="#"><i class="fa-solid fa-user-tie me-2"></i> ABC Faculty Portal</a>
+            <div class="d-flex align-items-center gap-3">
+                <div class="btn-theme-toggle shadow-sm" onclick="toggleTheme()" title="Toggle Theme">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </div>
+                <a href="/logout" class="btn btn-logout px-4"><i class="fa-solid fa-power-off me-2"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="faculty-header"></div>
+
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-4 mb-4 animate-up">
+                <div class="card-profile">
+                    <img src="https://ui-avatars.com/api/?name={{ lecturer.name }}&background=2c3e50&color=fff&size=200&bold=true" class="faculty-avatar" alt="Avatar">
+                    <h3 class="fw-bold mt-3 mb-0 text-dark">{{ lecturer.title }} {{ lecturer.name }}</h3>
+                    <p class="text-muted fw-500 mb-4">Senior Faculty Member</p>
+                    
+                    <div class="text-start bg-light p-3 rounded-4 border">
+                        <p class="mb-2 text-dark"><i class="fa-solid fa-id-badge text-primary me-2"></i> <strong>ID:</strong> {{ lecturer.lecturer_id }}</p>
+                        <p class="mb-2 text-dark"><i class="fa-solid fa-door-open text-primary me-2"></i> <strong>Office:</strong> {{ lecturer.office_room }}</p>
+                        <p class="mb-0 text-dark"><i class="fa-solid fa-envelope text-primary me-2"></i> faculty_{{ lecturer.lecturer_id|lower }}@abc.edu</p>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-between">
+                        <div class="text-center"><h5 class="mb-0 fw-bold text-dark">{{ courses|length }}</h5><small class="text-muted">Courses</small></div>
+                        <div class="text-center"><h5 class="mb-0 fw-bold text-dark">{{ committees|length }}</h5><small class="text-muted">Committees</small></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 animate-up" style="animation-delay: 0.2s;">
+                <h4 class="section-title">Teaching Assignments</h4>
+                <div class="row g-3 mb-5">
+                    {% for course in courses %}
+                    <div class="col-md-6">
+                        <div class="course-card-fac p-4">
+                            <div class="course-banner mb-3"></div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="course-icon-box"><i class="fa-solid fa-chalkboard-user"></i></div>
+                                <div class="ms-3">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 mb-1">{{ course.course_code }}</span>
+                                    <h6 class="fw-bold mb-0 text-dark">{{ course.title }}</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted"><i class="fa-regular fa-calendar-check me-1"></i> Current Semester</small>
+                                <button class="btn btn-sm btn-primary rounded-pill px-3 fw-bold shadow-sm" data-bs-toggle="modal" data-bs-target="#viewStudentsModal" onclick="showClassRoster('{{ course.course_code }}', '{{ course.title }}')">
+                                    <i class="fa-solid fa-users me-1"></i> View Students
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12"><p class="text-muted italic">No courses currently assigned.</p></div>
+                    {% endfor %}
+                </div>
+
+                <h4 class="section-title">Institutional Committees</h4>
+                <div class="row">
+                    {% for committee in committees %}
+                    <div class="col-12">
+                        <div class="committee-item shadow-sm">
+                            <div class="comm-icon"><i class="fa-solid fa-users-gear"></i></div>
+                            <div class="flex-grow-1">
+                                <h6 class="fw-bold mb-0 text-dark">{{ committee.title }}</h6>
+                                <small class="text-muted">Meets: {{ committee.frequency }}</small>
+                            </div>
+                            <span class="badge rounded-pill bg-info text-dark px-3 border border-info">Active Member</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12"><p class="text-muted italic">No committee memberships recorded.</p></div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewStudentsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-lg" style="overflow: hidden;">
+                <div class="modal-header text-white" style="background: linear-gradient(135deg, #2c3e50, #000000); border: none; padding: 20px 25px;">
+                    <div><span id="modalCourseCode" class="badge bg-light text-dark mb-1">CODE</span><h5 id="modalCourseTitle" class="modal-title fw-bold mb-0 lh-1">Course Title</h5></div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <p class="text-muted small mb-0"><i class="fa-solid fa-circle-info me-1 text-primary"></i> Currently enrolled students.</p>
+                        <button class="btn btn-sm btn-outline-success rounded-pill fw-bold" onclick="alert('Downloading Roster...')"><i class="fa-solid fa-file-excel me-1"></i> Download</button>
+                    </div>
+                    <div class="table-responsive bg-white rounded-3 shadow-sm border p-2">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light"><tr><th class="text-muted fw-bold small">STUDENT PROFILE</th><th class="text-muted fw-bold small">STUDENT ID</th><th class="text-muted fw-bold small">PROGRAMME</th><th class="text-muted fw-bold small">CURRENT GRADE</th></tr></thead>
+                            <tbody id="rosterTableBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 mt-5" style="background-color: transparent;">
+        <div class="container">
+            <p class="mb-0 small text-muted">&copy; 2026 ABC University Faculty Portal. | <i class="fa-solid fa-shield-halved me-1"></i> Authorized Access Only</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showClassRoster(code, title) {
+            document.getElementById('modalCourseCode').innerText = code;
+            document.getElementById('modalCourseTitle').innerHTML = '<i class="fa-solid fa-users-rectangle me-2"></i>' + title + ' - Class Roster';
+            const allStudents = [
+                { name: "Pratibha Agrawal", id: "S1003", prog: "BTECH-AIML", grade: "A+" },
+                { name: "Aarav Kumar", id: "S1004", prog: "BTECH-CSE", grade: "A" },
+                { name: "Isha Sharma", id: "S1005", prog: "BTECH-DS", grade: "B+" },
+                { name: "Rohan Gupta", id: "S1006", prog: "BTECH-ME", grade: "A-" },
+                { name: "Neha Verma", id: "S1007", prog: "MBA-FIN", grade: "B" },
+                { name: "Aditya Mishra", id: "S1010", prog: "MSC-PHY", grade: "A" }
+            ];
+            let rosterHtml = '';
+            let shuffled = allStudents.sort(() => 0.5 - Math.random());
+            let selectedStudents = shuffled.slice(0, Math.floor(Math.random() * 3) + 3);
+            if (!selectedStudents.find(s => s.id === 'S1003')) { selectedStudents[0] = allStudents[0]; }
+            selectedStudents.forEach(student => {
+                let avatarUrl = `https://ui-avatars.com/api/?name=${student.name}&background=random&color=fff&rounded=true&size=35&bold=true`;
+                let gradeBadge = student.grade.includes('A') ? 'bg-success text-white' : 'bg-warning text-dark';
+                
+                rosterHtml += `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="${avatarUrl}" class="shadow-sm">
+                            <div class="fw-bold text-dark">${student.name}</div>
+                        </div>
+                    </td>
+                    <td class="fw-bold text-secondary">${student.id}</td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3">${student.prog}</span></td>
+                    <td><span class="badge ${gradeBadge} px-2 shadow-sm">${student.grade}</span></td>
+                </tr>`;
+            });
+            document.getElementById('rosterTableBody').innerHTML = rosterHtml;
+        }
+
+        // ========================================= //
+        // DARK MODE LOGIC                           //
+        // ========================================= //
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('abc_portal_theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-bs-theme', 'light');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('abc_portal_theme', 'light');
+            }
+        }
+        
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('abc_portal_theme');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.documentElement.setAttribute('data-bs-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        };
+    </script>
+</body>
+</html>
